@@ -1,0 +1,38 @@
+// Existing pulse animation
+// animation: pulse 1s ease infinite;
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+// Rotating Heart
+.heart {
+  fill: red;
+  animation: rotate-heart 2s linear infinite;
+}
+
+@keyframes rotate-heart {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Centering and styling the text
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #6c757d; // Bootstrap's bg-secondary color
+  color: white;
+  text-align: center;
+}
+
+.display-1 {
+  font-size: 4rem; // Adjust the size as needed
+}
