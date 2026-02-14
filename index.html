@@ -1,48 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./Asset/scss/index.css">
-    <link rel="stylesheet" href="./Asset/scss/index.scss">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Hello!</title>
+    <title>Christine's Love Story</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-color: #1a1a1a;
+            --accent-color: #fb7185;
+        }
+
         body {
-            background-color: gray; /* Set background color to gray */
-            color: white; /* Default text color to white */
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: white;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-align: center;
         }
-        h1 {
-            color: black; /* Set H1 text color to black */
+
+        .font-romantic {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Heart Animation */
+        .heart-main {
+            width: 100px;
+            fill: #fb7185;
+            filter: drop-shadow(0 0 15px rgba(251, 113, 133, 0.6));
+            animation: pulse 1.5s ease-in-out infinite;
+            margin: 20px 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .text-container {
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .bgm-container {
+            position: fixed;
+            bottom: 30px;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .bgm-container:hover {
+            opacity: 1;
+        }
+
+        #start-overlay {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-progress {
             position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: #fb7185;
+            width: 0%;
+            animation: load 5s linear forwards;
         }
-        .bgm {
-            margin-top: 20px; /* Add spacing for audio element */
+
+        @keyframes load {
+            to { width: 100%; }
         }
     </style>
 </head>
-<body>
-    I 
-    <div class="bg-secondary p-3 text-white">
-    </div>
-    <svg class="heart" viewBox="0 0 32 29.6">
-      <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
-        c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
-    </svg> 
-    You
 
-    <audio controls autoplay muted type="audio/mpeg" class="bgm">
-        <source src="./The Distance Between Us Sqai MASTERED (Lowered Vocal).mp3">
-  
-    </audio>
+<body>
+    <!-- Initial Overlay to handle autoplay browser restrictions -->
+    <div id="start-overlay">
+        <button onclick="startExperience()" class="bg-rose-500 hover:bg-rose-600 text-white px-8 py-3 rounded-full font-bold text-lg shadow-xl transition-all transform hover:scale-105">
+            Click to start ❤️
+        </button>
+    </div>
+
+    <div class="text-container font-romantic">
+        <span>I</span>
+        <svg class="heart-main" viewBox="0 0 32 29.6">
+            <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+            c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z" />
+        </svg>
+        <span>You</span>
+    </div>
+
+    <div class="loading-bar">
+        <div class="loading-progress"></div>
+    </div>
+
+    <div class="bgm-container">
+        <audio id="bg-audio" controls muted class="bgm">
+            <source src="./The Distance Between Us Sqai MASTERED (Lowered Vocal).mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
     <script>
-        setTimeout(() => {
-            document.body.style.transition = "opacity 2s";
-            document.body.style.opacity = 0;
+        const audio = document.getElementById('bg-audio');
+        const overlay = document.getElementById('start-overlay');
+
+        function startExperience() {
+            // Remove muted and play
+            audio.muted = false;
+            audio.play().catch(e => console.log("Audio play failed:", e));
+            
+            // Fade out overlay
+            overlay.style.opacity = '0';
             setTimeout(() => {
-                window.location.href = "Pages/index.html";
+                overlay.style.display = 'none';
             }, 1000);
-        }, 5000);
+
+            // Start the redirect sequence
+            setTimeout(() => {
+                document.body.style.transition = "opacity 2s ease";
+                document.body.style.opacity = "0";
+                setTimeout(() => {
+                    window.location.href = "Pages/index.html";
+                }, 2000);
+            }, 5000);
+        }
     </script>
 </body>
+
 </html>
